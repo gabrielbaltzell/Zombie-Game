@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://c32wsjcok7t5b"]
+
+[ext_resource type="Script" path="res://Inventory/slot.gd" id="1_fcwkd"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3ga6r"]
+font_size = 10
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Slot" type="PanelContainer"]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_fcwkd")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="QuantityLabel" type="Label" parent="."]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "x99"
+label_settings = SubResource("LabelSettings_3ga6r")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

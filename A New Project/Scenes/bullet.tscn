@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://c54dgmos1ihp2"]
+
+[ext_resource type="Script" path="res://Scripts/bullet.gd" id="1_06ypl"]
+[ext_resource type="Texture2D" uid="uid://d4mwy65nv2ar7" path="res://Assets/Bullet.png" id="2_i6x5u"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xenkf"]
+radius = 1.0
+height = 4.0
+
+[node name="Bullet" type="CharacterBody2D"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_06ypl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_i6x5u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_xenkf")

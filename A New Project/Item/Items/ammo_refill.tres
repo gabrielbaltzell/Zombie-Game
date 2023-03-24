@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://bxj51me7g5wfv"]
+
+[ext_resource type="Script" path="res://Item/item_data.gd" id="1_nu0uh"]
+[ext_resource type="Texture2D" uid="uid://b24m134saoqe6" path="res://Item/ItemSpriteSheet.png" id="2_wlfba"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_upujw"]
+atlas = ExtResource("2_wlfba")
+region = Rect2(16, 0, 16, 16)
+
+[resource]
+script = ExtResource("1_nu0uh")
+name = "Ammo Refill"
+description = "A box of ammunition"
+stackable = false
+texture = SubResource("AtlasTexture_upujw")

@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dyxcwb75adipw"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_wvqmg"]
+[ext_resource type="Resource" uid="uid://cfn2kogxjp86" path="res://test_inventory.tres" id="2_0d0yu"]
+[ext_resource type="Texture2D" uid="uid://qgukmp3lvfyg" path="res://Assets/survivor-idle_rifle_0.png" id="2_n51ml"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fx5m0"]
+radius = 32.0156
+
+[node name="player" type="CharacterBody2D" groups=["Player"]]
+script = ExtResource("1_wvqmg")
+inventory_data = ExtResource("2_0d0yu")
+speed = 200
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(20, -7)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_n51ml")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_fx5m0")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(74, 12)
