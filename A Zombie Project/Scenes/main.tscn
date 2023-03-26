@@ -32,13 +32,14 @@ target_scene_path = "res://Scenes/base_camp.tscn"
 
 [node name="player" parent="." instance=ExtResource("3_j22bx")]
 position = Vector2(-186, 57)
+collision_layer = 5
 
 [node name="zombie" parent="." instance=ExtResource("4_t2uit")]
 position = Vector2(-643, 32)
 
 [node name="UI" parent="." instance=ExtResource("6_7d5vn")]
 
-[node name="InventoryInterface" parent="UI" index="0"]
-visible = false
+[connection signal="drop_slot_data" from="UI/InventoryInterface" to="." method="_on_inventory_interface_drop_slot_data"]
 
 [editable path="UI"]
+[editable path="UI/InventoryInterface/GrabbedSlot"]

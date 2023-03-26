@@ -1,0 +1,39 @@
+[gd_scene load_steps=11 format=3 uid="uid://c7li7g7imv4eh"]
+
+[ext_resource type="Script" path="res://Scenes/interactable_table.gd" id="1_0vfwq"]
+[ext_resource type="Texture2D" uid="uid://b2cn5wyj0dqec" path="res://Assets/TableSprite.png" id="1_di5gb"]
+[ext_resource type="Script" path="res://Inventory/inventory_data.gd" id="2_fl0mp"]
+[ext_resource type="Resource" uid="uid://b3dgc7jea7pu3" path="res://Item/Items/bread.tres" id="3_hci6r"]
+[ext_resource type="Script" path="res://Inventory/slot_data.gd" id="4_wd7g7"]
+[ext_resource type="Resource" uid="uid://bxj51me7g5wfv" path="res://Item/Items/ammo_refill.tres" id="5_c724g"]
+
+[sub_resource type="Resource" id="Resource_htx5s"]
+script = ExtResource("4_wd7g7")
+item_data = ExtResource("3_hci6r")
+quantity = 20
+
+[sub_resource type="Resource" id="Resource_4qkox"]
+script = ExtResource("4_wd7g7")
+item_data = ExtResource("5_c724g")
+quantity = 1
+
+[sub_resource type="Resource" id="Resource_uehby"]
+script = ExtResource("2_fl0mp")
+slot_datas = Array[ExtResource("4_wd7g7")]([null, SubResource("Resource_htx5s"), null, SubResource("Resource_4qkox"), null, null, null, null, null, null])
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_03nkd"]
+size = Vector2(48, 120)
+
+[node name="InteractableTable" type="StaticBody2D" groups=["external_inventory"]]
+collision_layer = 5
+collision_mask = 0
+script = ExtResource("1_0vfwq")
+inventory_data = SubResource("Resource_uehby")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_di5gb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.31134e-07, -3)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_03nkd")

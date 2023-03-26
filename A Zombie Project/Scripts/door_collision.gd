@@ -18,12 +18,12 @@ func check_bodies(bodies):
 			Global.player_just_moved = false
 
 
-func _on_body_entered(body):
+func _on_body_entered(_body):
 	if self.has_overlapping_bodies():
 		var bodies = get_overlapping_bodies()
 		check_bodies(bodies)
 
-func _on_body_exited(body):
+func _on_body_exited(_body):
 	var bodies = get_overlapping_bodies()
 	if bodies.size() == 0:
 		Global.player_just_moved = false

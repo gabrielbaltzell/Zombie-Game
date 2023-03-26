@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://b3dgc7jea7pu3"]
+
+[ext_resource type="Script" path="res://Item/item_data.gd" id="1_k687p"]
+[ext_resource type="Texture2D" uid="uid://dwqocucabl2yu" path="res://Item/item_atles.tres" id="2_oeupt"]
+
+[resource]
+script = ExtResource("1_k687p")
+name = "Bread"
+description = "A stale loaf of bread."
+stackable = true
+texture = ExtResource("2_oeupt")

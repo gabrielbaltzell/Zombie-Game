@@ -8,6 +8,7 @@
 radius = 32.0156
 
 [node name="player" type="CharacterBody2D" groups=["Player"]]
+collision_layer = 3
 script = ExtResource("1_wvqmg")
 inventory_data = ExtResource("2_0d0yu")
 speed = 200
@@ -24,3 +25,7 @@ shape = SubResource("CircleShape2D_fx5m0")
 
 [node name="Muzzle" type="Marker2D" parent="."]
 position = Vector2(74, 12)
+
+[node name="InteractRay" type="RayCast2D" parent="."]
+target_position = Vector2(113, 0)
+collision_mask = 4

@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 signal toggle_inventory
 
+@onready var interact_ray = $InteractRay
+
 @export var inventory_data: InventoryData
 
 @onready var bullet = preload("res://Scenes/bullet.tscn")
@@ -20,7 +22,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var velocity = Vector2.ZERO
+	velocity = Vector2.ZERO
 	var input_vector = Vector2.ZERO
 	if Input.is_action_pressed("move_up"):
 		input_vector.y -= 1
@@ -38,6 +40,9 @@ func _process(delta):
 	if Input.is_action_just_pressed("inventory"):
 		toggle_inventory.emit() 
 		
+	if Input.is_action_just_pressed("interact"):
+		interact()
+		
 	if input_vector.length() > 0:
 		input_vector = input_vector.normalized()
 		if t < duration:
@@ -49,11 +54,11 @@ func _process(delta):
 	
 	look_at(get_global_mouse_position())
 
-
-
 func shoot():
 	var b = bullet.instantiate()
 	b.start($Muzzle.global_position, rotation)
 	get_tree().root.add_child(b)
 		
-	
+func interact() -> void:
+	if interact_ray.is_colliding():
+		interact_ray.get_collider().player_interact()

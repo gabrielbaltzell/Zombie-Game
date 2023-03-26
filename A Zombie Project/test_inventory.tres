@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="InventoryData" load_steps=9 format=3 uid="uid://cfn2kogxjp86"]
+
+[ext_resource type="Script" path="res://Inventory/inventory_data.gd" id="1_mspto"]
+[ext_resource type="Script" path="res://Inventory/slot_data.gd" id="2_uveql"]
+[ext_resource type="Resource" uid="uid://b3dgc7jea7pu3" path="res://Item/Items/bread.tres" id="4_2bw3q"]
+[ext_resource type="Resource" uid="uid://bxj51me7g5wfv" path="res://Item/Items/ammo_refill.tres" id="4_v5ylk"]
+
+[sub_resource type="Resource" id="Resource_truyb"]
+script = ExtResource("2_uveql")
+item_data = ExtResource("4_v5ylk")
+quantity = 1
+
+[sub_resource type="Resource" id="Resource_yxgs4"]
+script = ExtResource("2_uveql")
+item_data = ExtResource("4_v5ylk")
+quantity = 1
+
+[sub_resource type="Resource" id="Resource_dp5rt"]
+script = ExtResource("2_uveql")
+item_data = ExtResource("4_2bw3q")
+quantity = 90
+
+[sub_resource type="Resource" id="Resource_18tkd"]
+script = ExtResource("2_uveql")
+item_data = ExtResource("4_2bw3q")
+quantity = 10
+
+[resource]
+script = ExtResource("1_mspto")
+slot_datas = Array[ExtResource("2_uveql")]([null, null, null, SubResource("Resource_truyb"), SubResource("Resource_yxgs4"), null, SubResource("Resource_dp5rt"), SubResource("Resource_18tkd"), null, null, null, null, null, null, null, null, null, null])

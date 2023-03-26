@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://dwqocucabl2yu"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mdflk"]
+load_path = "res://.godot/imported/ItemSpriteSheet.png-51178397ee3fa22be50b677bda84987e.ctex"
+
+[resource]
+atlas = SubResource("CompressedTexture2D_mdflk")
+region = Rect2(0, 0, 16, 16)

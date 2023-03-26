@@ -22,7 +22,7 @@ func actor_setup():
 	
 	reset_target_position(target)
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	if nav_agent.is_navigation_finished():
 		reset_target_position(target)
 		
@@ -57,12 +57,12 @@ func _take_damage(damage):
 func death():
 	queue_free()
 	
-func reset_target_position(target):
-	nav_agent.target_position = target
+func reset_target_position(_target):
+	nav_agent.target_position = _target
 	
-func wall_avoidence(raycast, new_velocity):
-	var ray_vector : Vector2 = raycast.global_position - raycast.get_collision_point()
-	var ray_vector_reflection : Vector2 = raycast.get_collision_normal().normalized().reflection(ray_vector)
+func wall_avoidence(_raycast, new_velocity):
+	var ray_vector : Vector2 = _raycast.global_position - _raycast.get_collision_point()
+	var ray_vector_reflection : Vector2 = _raycast.get_collision_normal().normalized().reflection(ray_vector)
 	set_velocity(new_velocity + ray_vector_reflection)
 	move_and_slide()
 	

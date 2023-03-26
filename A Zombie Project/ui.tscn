@@ -36,8 +36,30 @@ theme_override_constants/margin_bottom = 8
 layout_mode = 2
 columns = 6
 
+[node name="ExternalInventory" type="PanelContainer" parent="InventoryInterface"]
+visible = false
+layout_mode = 0
+offset_left = 420.0
+offset_top = 131.0
+offset_right = 460.0
+offset_bottom = 171.0
+script = ExtResource("2_md5e8")
+
+[node name="MarginContainer" type="MarginContainer" parent="InventoryInterface/ExternalInventory"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ItemGrid" type="GridContainer" parent="InventoryInterface/ExternalInventory/MarginContainer"]
+layout_mode = 2
+columns = 6
+
 [node name="GrabbedSlot" parent="InventoryInterface" instance=ExtResource("3_y74nt")]
 visible = false
 modulate = Color(1, 1, 1, 0.521569)
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 0
+
+[connection signal="gui_input" from="InventoryInterface" to="InventoryInterface" method="_on_gui_input"]
