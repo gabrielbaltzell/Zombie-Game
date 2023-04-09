@@ -1,0 +1,140 @@
+[gd_scene load_steps=12 format=3 uid="uid://i8vyl5bpudts"]
+
+[ext_resource type="Script" path="res://Scripts/ui.gd" id="1_4drj4"]
+[ext_resource type="Script" path="res://Scripts/inventory_interface.gd" id="1_17wt3"]
+[ext_resource type="Script" path="res://Scripts/inventory.gd" id="2_md5e8"]
+[ext_resource type="PackedScene" path="res://Scenes/slot.tscn" id="3_y74nt"]
+[ext_resource type="Script" path="res://Scripts/hot_bar_inventory.gd" id="4_85ero"]
+[ext_resource type="PackedScene" uid="uid://bre0f6fgwsmwq" path="res://Scenes/health_bar.tscn" id="5_khn4y"]
+[ext_resource type="StyleBox" uid="uid://boqyc8w26lwrs" path="res://ButtonStyles/button_style_hover_restart.tres" id="7_k0ear"]
+[ext_resource type="StyleBox" uid="uid://ccd4c5gljda6h" path="res://ButtonStyles/button_style_normal_restart.tres" id="8_6xxc3"]
+[ext_resource type="StyleBox" uid="uid://brmd6vribyq66" path="res://ButtonStyles/button_style_pressed_restart.tres" id="9_uf1gu"]
+[ext_resource type="FontFile" uid="uid://bhd36u3t7gkje" path="res://Assets/Fonts/dlxfont.ttf" id="10_qhqs7"]
+
+[sub_resource type="Theme" id="Theme_p7t28"]
+default_font = ExtResource("10_qhqs7")
+Button/styles/hover = ExtResource("7_k0ear")
+Button/styles/normal = ExtResource("8_6xxc3")
+Button/styles/pressed = ExtResource("9_uf1gu")
+
+[node name="UI" type="CanvasLayer"]
+script = ExtResource("1_4drj4")
+
+[node name="InventoryInterface" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_17wt3")
+metadata/_edit_use_anchors_ = true
+
+[node name="PlayerInventory" type="PanelContainer" parent="InventoryInterface"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 50.0
+script = ExtResource("2_md5e8")
+
+[node name="MarginContainer" type="MarginContainer" parent="InventoryInterface/PlayerInventory"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ItemGrid" type="GridContainer" parent="InventoryInterface/PlayerInventory/MarginContainer"]
+layout_mode = 2
+columns = 6
+
+[node name="ExternalInventory" type="PanelContainer" parent="InventoryInterface"]
+visible = false
+layout_mode = 0
+offset_left = 420.0
+offset_top = 131.0
+offset_right = 460.0
+offset_bottom = 171.0
+script = ExtResource("2_md5e8")
+
+[node name="MarginContainer" type="MarginContainer" parent="InventoryInterface/ExternalInventory"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ItemGrid" type="GridContainer" parent="InventoryInterface/ExternalInventory/MarginContainer"]
+layout_mode = 2
+columns = 6
+
+[node name="GrabbedSlot" parent="InventoryInterface" instance=ExtResource("3_y74nt")]
+visible = false
+modulate = Color(1, 1, 1, 0.521569)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+
+[node name="HotBarInventory" type="PanelContainer" parent="."]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 286.0
+offset_bottom = 66.0
+script = ExtResource("4_85ero")
+
+[node name="MarginContainer" type="MarginContainer" parent="HotBarInventory"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HotBarInventory/MarginContainer"]
+layout_mode = 2
+
+[node name="HealthBar" parent="." instance=ExtResource("5_khn4y")]
+offset_left = 1013.0
+offset_top = 19.0
+offset_right = 1053.0
+offset_bottom = 59.0
+
+[node name="Menu" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="Menu"]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.301961, 0.301961, 0.301961, 0.529412)
+
+[node name="Panel" type="Panel" parent="Menu"]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="RestartGameButton" type="Button" parent="Menu/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -112.0
+offset_top = -20.0
+offset_right = 112.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_p7t28")
+text = " Restart Game "
+
+[connection signal="gui_input" from="InventoryInterface" to="InventoryInterface" method="_on_gui_input"]
+[connection signal="visibility_changed" from="InventoryInterface" to="InventoryInterface" method="_on_visibility_changed"]
+[connection signal="pressed" from="Menu/Panel/RestartGameButton" to="." method="_on_restart_game_button_pressed"]
+
+[editable path="InventoryInterface/GrabbedSlot"]

@@ -1,14 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://dhkabafmkx3vv"]
+[gd_scene load_steps=5 format=3 uid="uid://b0k6wwwbuyjhf"]
 
-[ext_resource type="Script" path="res://Scenes/pick_up.gd" id="1_yqu2h"]
+[ext_resource type="Script" path="res://Scripts/pick_up.gd" id="1_olkrj"]
+[ext_resource type="Script" path="res://Scripts/slot_data.gd" id="2_bfb4g"]
+
+[sub_resource type="Resource" id="Resource_qdtnq"]
+script = ExtResource("2_bfb4g")
+quantity = 1
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h5f8y"]
 radius = 9.0
 
 [node name="PickUp" type="Area2D"]
+z_index = 1
 collision_layer = 0
 collision_mask = 3
-script = ExtResource("1_yqu2h")
+script = ExtResource("1_olkrj")
+slot_data = SubResource("Resource_qdtnq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 

@@ -1,5 +1,7 @@
 extends Node
 
+var game_start_path: String = "res://Scenes/main.tscn"
+
 var player = null
 var inventory_interface = null
 
@@ -7,6 +9,7 @@ var current_scene = null
 var old_scene = null
 
 var player_just_moved: bool
+var game_restart: bool = false
 
 
 func _ready():
@@ -24,8 +27,12 @@ func deffered_go_to_scene(path):
 	var new_scene = ResourceLoader.load(path)
 	current_scene = new_scene.instantiate()
 	get_tree().get_root().add_child(current_scene)
-	identify_door_collision_pos(current_scene, old_scene)
+	
+	if not game_restart:
+		identify_door_collision_pos(current_scene, old_scene)
+		
 	initialize_scene(current_scene)
+	game_restart = false
 func place_player():
 	pass
 	
@@ -42,4 +49,7 @@ func initialize_scene(scene):
 	player = scene.find_child('player')
 	inventory_interface = scene.find_child('InventoryInterface')
 
-
+func restart_game():
+	game_restart = true
+	go_to_scene(game_start_path)
+	

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDataConsumable" load_steps=4 format=3 uid="uid://eq2bp1iw1kul"]
+
+[ext_resource type="Script" path="res://Item/item_data_consumable.gd" id="1_38tj1"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mdflk"]
+load_path = "res://.godot/imported/ItemSpriteSheet.png-51178397ee3fa22be50b677bda84987e.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0tjm"]
+atlas = SubResource("CompressedTexture2D_mdflk")
+region = Rect2(32, 0, 16, 16)
+
+[resource]
+script = ExtResource("1_38tj1")
+heal_value = 100
+name = "Medicine"
+description = "Heals the body"
+stackable = true
+texture = SubResource("AtlasTexture_l0tjm")

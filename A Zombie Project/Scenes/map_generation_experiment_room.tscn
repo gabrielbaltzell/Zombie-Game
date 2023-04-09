@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dn0e5m5sx8inn"]
+
+[ext_resource type="Script" path="res://Scripts/map_generation_experiment_room.gd" id="1_1u08p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pqltd"]
+
+[node name="MapGenerationExperimentRoom" type="RigidBody2D"]
+collision_layer = 256
+collision_mask = 256
+lock_rotation = true
+script = ExtResource("1_1u08p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_pqltd")

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0mh5wjpbt26x"]
+
+[ext_resource type="TileSet" uid="uid://chv4b77q1itor" path="res://Assets/main_tileset.tres" id="1_6r0wg"]
+[ext_resource type="Script" path="res://Scripts/map_generation_experiment.gd" id="1_slum6"]
+
+[node name="MapGenerationExperiment" type="Node2D"]
+script = ExtResource("1_slum6")
+
+[node name="TileMap" type="TileMap" parent="."]
+show_behind_parent = true
+tile_set = ExtResource("1_6r0wg")
+format = 2
+
+[node name="Rooms" type="Node" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.1, 0.1)

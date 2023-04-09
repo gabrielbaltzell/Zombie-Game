@@ -1,11 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cutjvtpntlwov"]
+[gd_scene load_steps=7 format=3 uid="uid://cf8xj3rr2v4ei"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_wk3sc"]
 [ext_resource type="TileSet" uid="uid://chv4b77q1itor" path="res://Assets/main_tileset.tres" id="1_wxik6"]
 [ext_resource type="PackedScene" uid="uid://crk2r2586h301" path="res://Scenes/door_collision.tscn" id="2_n13g7"]
 [ext_resource type="PackedScene" uid="uid://dyxcwb75adipw" path="res://Scenes/player.tscn" id="3_3adf1"]
-[ext_resource type="PackedScene" uid="uid://hji3h4tby7fr" path="res://ui.tscn" id="4_fanwd"]
-[ext_resource type="PackedScene" uid="uid://c7li7g7imv4eh" path="res://Scenes/interactable_table.tscn" id="6_jc6rm"]
+[ext_resource type="PackedScene" uid="uid://i8vyl5bpudts" path="res://Scenes/ui.tscn" id="4_fanwd"]
+[ext_resource type="PackedScene" path="res://Scenes/interactable_table.tscn" id="6_jc6rm"]
 
 [node name="BaseCamp" type="Node"]
 script = ExtResource("1_wk3sc")
@@ -22,7 +22,7 @@ position = Vector2(-288, 0)
 target_scene_path = "res://Scenes/main.tscn"
 
 [node name="player" parent="." instance=ExtResource("3_3adf1")]
-position = Vector2(-289, 0)
+position = Vector2(-282, 2)
 
 [node name="UI" parent="." instance=ExtResource("4_fanwd")]
 
@@ -30,3 +30,4 @@ position = Vector2(-289, 0)
 position = Vector2(64, -292)
 
 [editable path="UI"]
+[editable path="UI/InventoryInterface/GrabbedSlot"]

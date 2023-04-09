@@ -1,0 +1,105 @@
+[gd_scene load_steps=12 format=3 uid="uid://cjjmew32p4skr"]
+
+[ext_resource type="Texture2D" uid="uid://dty02ip10hjqp" path="res://Assets/GrenadeSprite.png" id="1_8q43v"]
+[ext_resource type="Script" path="res://Scripts/grenade.gd" id="1_qlemu"]
+[ext_resource type="Texture2D" uid="uid://yf8no1tag26v" path="res://Assets/Explosions/0013.png" id="3_q2f0w"]
+[ext_resource type="Texture2D" uid="uid://cfd3f1q3fmfdn" path="res://Assets/Explosions/0014.png" id="4_232kn"]
+[ext_resource type="Texture2D" uid="uid://b2q6xi5ech3an" path="res://Assets/Explosions/0015.png" id="5_bdjjd"]
+[ext_resource type="Texture2D" uid="uid://beqpu5x18fws4" path="res://Assets/Explosions/0016.png" id="6_xvn02"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1oapk"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u4t1q"]
+radius = 92.0217
+
+[sub_resource type="Curve" id="Curve_8rejm"]
+min_value = -200.0
+max_value = 200.0
+_data = [Vector2(0.00787402, 200), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_iq4ix"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.992126, -1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pvavp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_q2f0w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_232kn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_bdjjd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_xvn02")
+}],
+"loop": true,
+"name": &"explode",
+"speed": 5.0
+}]
+
+[node name="Grenade" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 5
+mass = 0.5
+inertia = 5.0
+gravity_scale = 0.0
+linear_damp = 3.0
+angular_damp = 5.0
+script = ExtResource("1_qlemu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_8q43v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1oapk")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Explosion" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Explosion"]
+shape = SubResource("CircleShape2D_u4t1q")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 100
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.51
+randomness = 1.0
+lifetime_randomness = 0.47
+emission_shape = 2
+emission_sphere_radius = 15.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 250.0
+initial_velocity_max = 300.0
+linear_accel_min = -5.0
+linear_accel_curve = SubResource("Curve_8rejm")
+color = Color(0.858824, 0.054902, 0, 1)
+hue_variation_min = -0.1
+hue_variation_max = 0.1
+hue_variation_curve = SubResource("Curve_iq4ix")
+
+[node name="ParticleTimer" type="Timer" parent="CPUParticles2D"]
+wait_time = 0.5
+one_shot = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+rotation = 3.14159
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_pvavp")
+animation = &"explode"
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="CPUParticles2D/ParticleTimer" to="." method="_on_particle_timer_timeout"]

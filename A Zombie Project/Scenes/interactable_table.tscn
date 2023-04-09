@@ -1,10 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://c7li7g7imv4eh"]
+[gd_scene load_steps=11 format=3]
 
-[ext_resource type="Script" path="res://Scenes/interactable_table.gd" id="1_0vfwq"]
+[ext_resource type="Script" path="res://Scripts/interactable_table.gd" id="1_0vfwq"]
 [ext_resource type="Texture2D" uid="uid://b2cn5wyj0dqec" path="res://Assets/TableSprite.png" id="1_di5gb"]
-[ext_resource type="Script" path="res://Inventory/inventory_data.gd" id="2_fl0mp"]
+[ext_resource type="Script" path="res://Scripts/inventory_data.gd" id="2_fl0mp"]
 [ext_resource type="Resource" uid="uid://b3dgc7jea7pu3" path="res://Item/Items/bread.tres" id="3_hci6r"]
-[ext_resource type="Script" path="res://Inventory/slot_data.gd" id="4_wd7g7"]
+[ext_resource type="Script" path="res://Scripts/slot_data.gd" id="4_wd7g7"]
 [ext_resource type="Resource" uid="uid://bxj51me7g5wfv" path="res://Item/Items/ammo_refill.tres" id="5_c724g"]
 
 [sub_resource type="Resource" id="Resource_htx5s"]
@@ -25,7 +25,7 @@ slot_datas = Array[ExtResource("4_wd7g7")]([null, SubResource("Resource_htx5s"),
 size = Vector2(48, 120)
 
 [node name="InteractableTable" type="StaticBody2D" groups=["external_inventory"]]
-collision_layer = 5
+collision_layer = 9
 collision_mask = 0
 script = ExtResource("1_0vfwq")
 inventory_data = SubResource("Resource_uehby")

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bstcmsk6k26vk"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://Inventory/inventory_interface.gd" id="1_rtwsc"]
-[ext_resource type="PackedScene" uid="uid://bi6nged81558y" path="res://Inventory/inventory.tscn" id="2_51yty"]
+[ext_resource type="Script" path="res://Scripts/inventory_interface.gd" id="1_rtwsc"]
+[ext_resource type="PackedScene" path="res://Scenes/inventory.tscn" id="2_51yty"]
+
 
 [node name="InventoryInterface" type="Control"]
 visible = false

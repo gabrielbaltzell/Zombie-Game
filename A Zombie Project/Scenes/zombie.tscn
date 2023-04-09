@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://upqdbjcev0sx"]
+[gd_scene load_steps=5 format=3 uid="uid://upqdbjcev0sx"]
 
 [ext_resource type="Script" path="res://Scripts/zombie.gd" id="1_4gx7c"]
 [ext_resource type="Texture2D" uid="uid://cgdhgr36wrwtj" path="res://Assets/skeleton-idle_0.png" id="1_wpsmk"]
@@ -6,9 +6,13 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_dh5d8"]
 radius = 67.5
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pxh12"]
+radius = 19.0
+height = 64.0
+
 [node name="zombie" type="CharacterBody2D"]
-collision_layer = 2
-collision_mask = 2
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_4gx7c")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -38,8 +42,13 @@ target_position = Vector2(20, 80)
 position = Vector2(-54, -0.000195479)
 target_position = Vector2(-20, 80)
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
-autostart = true
+[node name="AttackCooldownTimer" type="Timer" parent="."]
+
+[node name="DamageArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(22, 1)
+shape = SubResource("CapsuleShape2D_pxh12")
 
 [connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]
+[connection signal="timeout" from="AttackCooldownTimer" to="." method="_on_attack_cooldown_timer_timeout"]

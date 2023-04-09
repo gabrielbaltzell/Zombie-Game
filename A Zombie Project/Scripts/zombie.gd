@@ -1,21 +1,32 @@
 extends CharacterBody2D
 
-var target_pos 
+var blood_splatter = preload("res://Scenes/blood_splatter.tscn")
+
 @onready var nav_agent = $NavigationAgent2D
 @onready var target = get_parent().get_node("player").global_position
 @onready var raycast = $RayCast2D
+@onready var damage_area = $DamageArea
+@onready var attack_cooldown_timer = $AttackCooldownTimer
 
+var target_pos 
 var max_hitpoints = 400
 var current_hitpoints
+var attack_damage = 100
+var attack_cooldown: float = 1
+var attack_cooldown_complete: bool = false
 
 var speed = 100
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	current_hitpoints = max_hitpoints
+	attack_cooldown_timer.wait_time = attack_cooldown
+	
 	nav_agent.path_desired_distance = 4.0
 	nav_agent.target_desired_distance = 4.0
 	
 	call_deferred('actor_setup')
+	
+	attack_cooldown_timer.start()
 	
 func actor_setup():
 	await get_tree().physics_frame
@@ -35,7 +46,10 @@ func _physics_process(_delta):
 	new_velocity = new_velocity.normalized()
 	new_velocity = new_velocity * speed
 	
-	target = get_parent().get_node("player").global_position
+	if get_parent().get_node('player'):
+		target = get_parent().get_node("player").global_position
+	else:
+		target = get_parent().get_node('MobSpawner').global_position
 	
 	var raycasts = get_tree().get_nodes_in_group('raycasts')
 	for araycast in raycasts:
@@ -46,11 +60,15 @@ func _physics_process(_delta):
 			movement(new_velocity)
 			break
 	
+func _process(delta):
+	if damage_area.has_overlapping_bodies():
+		var bodies = damage_area.get_overlapping_bodies()
+		deal_damage(bodies)
 
-
-func _take_damage(damage):
+func _take_damage(damage, impact_position, impact_direction):
 	current_hitpoints -= damage
 	print(current_hitpoints)
+	instantiate_blood_splatter(impact_position, impact_direction)
 	if current_hitpoints <= 0:
 		death()
 
@@ -71,3 +89,24 @@ func movement(new_velocity):
 	set_velocity(new_velocity)
 	move_and_slide()
 	
+func instantiate_blood_splatter(impact_position, impact_direction):
+	var blood_splatter_instance = blood_splatter.instantiate()
+	blood_splatter_instance.rotation = impact_direction + deg_to_rad(90)
+	blood_splatter_instance.position = global_position
+	get_parent().find_child('Debris').add_child(blood_splatter_instance)
+
+func get_blood_splatter_position(impact_position, impact_direction) -> Vector2:
+	var impact_vector: Vector2
+	impact_vector = Vector2(impact_direction, impact_position)
+	return impact_vector
+	
+func deal_damage(bodies_in_damage_area):
+	for abody in bodies_in_damage_area:
+			if abody.has_method('_take_damage') and abody.is_in_group('Player') \
+					and attack_cooldown_complete == true:
+				abody._take_damage(attack_damage, global_position, global_rotation)
+				attack_cooldown_complete = false
+				attack_cooldown_timer.start()
+
+func _on_attack_cooldown_timer_timeout():
+	attack_cooldown_complete = true

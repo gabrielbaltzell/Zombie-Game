@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://baesy5ktsem2k"]
+
+[ext_resource type="Texture2D" uid="uid://lixa7n5kaf0f" path="res://Assets/blood - left 1.png" id="1_cvhq0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20lee"]
+atlas = ExtResource("1_cvhq0")
+region = Rect2(896, 512, 512, 512)
+
+[node name="BloodSplatter" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-10, -70)
+rotation = 1.30376
+scale = Vector2(0.3, 0.3)
+texture = SubResource("AtlasTexture_20lee")

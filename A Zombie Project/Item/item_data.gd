@@ -7,4 +7,6 @@ class_name ItemData
 @export var texture: AtlasTexture
 
  
+func use(target) -> void:
+	pass
 

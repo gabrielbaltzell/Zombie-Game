@@ -44,7 +44,7 @@ func on_inventory_interact(inventory_data: InventoryData, index: int, button: in
 		[_, MOUSE_BUTTON_LEFT]:
 			grabbed_slot_data = inventory_data.drop_slot_data(grabbed_slot_data, index)
 		[null, MOUSE_BUTTON_RIGHT]:
-			pass
+			inventory_data.use_slot_data(index)
 		[_, MOUSE_BUTTON_RIGHT]:
 			grabbed_slot_data = inventory_data.drop_single_slot_data(grabbed_slot_data, index) 
 
@@ -66,6 +66,19 @@ func _on_gui_input(event):
 		match event.button_index:
 			MOUSE_BUTTON_LEFT:
 				#emits to main.gd
+				drop_slot_data.emit(grabbed_slot_data)
+				grabbed_slot_data = null
+				update_grabbed_slot()
+			
+			MOUSE_BUTTON_RIGHT:
+				drop_slot_data.emit(grabbed_slot_data.create_single_slot_data())
+				if grabbed_slot_data.quantity < 1:
+					grabbed_slot = null
 				
-				print(grabbed_slot, 'inventory_interface.gd')
-				drop_slot_data.emit(grabbed_slot)
+func _on_visibility_changed():
+	if not visible and grabbed_slot_data:
+		drop_slot_data.emit(grabbed_slot_data)
+		grabbed_slot_data = null
+		update_grabbed_slot()
+	
+	
