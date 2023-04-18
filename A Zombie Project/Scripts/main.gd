@@ -2,10 +2,16 @@ extends Node
 
 const PickUp = preload("res://Scenes/pick_up.tscn")
 
+@onready var tile_map = $NavigationRegion2D/TileMap
 @onready var player = $player
 @onready var inventory_interface = $UI/InventoryInterface
 @onready var hot_bar_inventory = $UI/HotBarInventory
 var is_inventory_interface_visible = false
+
+var tile_map_collision_rect: Rect2
+
+var layer_1_used_cells: Array
+var player_position_cell: Vector2i
 
 func _ready() -> void:
 	randomize()
@@ -15,6 +21,13 @@ func _ready() -> void:
 	
 	for node in get_tree().get_nodes_in_group('external_inventory'):
 		node.toggle_inventory.connect(toggle_inventory_interface)
+		
+	layer_1_used_cells = []
+	layer_1_used_cells = tile_map.get_used_cells_by_id(1, 0)
+	print(layer_1_used_cells)
+	
+func _process(delta):
+	print(tile_map.get_cell_atlas_coords(0, Vector2i(floor(player.position.x), floor(player.position.y))))
 	
 func toggle_inventory_interface(external_inventory_owner = null) -> void:
 	inventory_interface.visible = not inventory_interface.visible

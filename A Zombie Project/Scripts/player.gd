@@ -5,6 +5,7 @@ signal update_health_bar(health_bar_value: int)
 signal game_over
 
 @onready var interact_ray = $InteractRay
+@onready var area_2d = $Area2D
 
 @export var inventory_data: InventoryData
 
@@ -102,3 +103,7 @@ func death():
 	controls_locked = true
 	emit_signal('game_over')
 	
+
+
+func _on_area_2d_body_entered(body):
+	print(body)

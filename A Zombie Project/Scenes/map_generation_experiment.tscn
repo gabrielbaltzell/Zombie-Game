@@ -15,3 +15,5 @@ format = 2
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.1, 0.1)
+
+[node name="BlankRooms" type="Node" parent="."]

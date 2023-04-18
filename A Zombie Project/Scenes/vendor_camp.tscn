@@ -3,10 +3,12 @@
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_850ch"]
 [ext_resource type="TileSet" uid="uid://chv4b77q1itor" path="res://Assets/main_tileset.tres" id="1_fhqif"]
 [ext_resource type="PackedScene" uid="uid://crk2r2586h301" path="res://Scenes/door_collision.tscn" id="2_jjjeh"]
-[ext_resource type="PackedScene" uid="uid://dyxcwb75adipw" path="res://Scenes/player.tscn" id="3_obivp"]
 [ext_resource type="PackedScene" uid="uid://i8vyl5bpudts" path="res://Scenes/ui.tscn" id="4_iygty"]
 
-[node name="VendorCamp" type="Node"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ego8"]
+size = Vector2(1088, 1480)
+
+[node name="VendorCamp" type="RigidBody2D"]
 script = ExtResource("1_850ch")
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -19,8 +21,8 @@ layer_0/tile_data = PackedInt32Array(6, 131072, 2, -65530, 131072, 0, -65531, 65
 position = Vector2(415, -1)
 target_scene_path = "res://Scenes/main.tscn"
 
-[node name="player" parent="." instance=ExtResource("3_obivp")]
-position = Vector2(407, -5)
-rotation = 3.14159
-
 [node name="UI" parent="." instance=ExtResource("4_iygty")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(32, -36)
+shape = SubResource("RectangleShape2D_0ego8")

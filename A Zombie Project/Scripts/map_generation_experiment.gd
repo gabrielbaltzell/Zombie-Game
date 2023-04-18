@@ -2,18 +2,29 @@ extends Node2D
 
 @onready var tile_map = $TileMap
 @onready var rooms = $Rooms
+@onready var blank_rooms = $BlankRooms
 
 var room = preload("res://Scenes/map_generation_experiment_room.tscn")
+var blank_room = preload("res://Scenes/blank_room.tscn")
+var door_collision = preload("res://Scenes/door_collision.tscn")
 
 var room_size_min: int = 4
 var room_size_max: int = 10
-var room_quantity: int = 100
+var room_quantity: int = 50
 var tile_size: int = 64
 var horizontal_spread = 600
 var vertical_spread = 400
 var culling_coefficient: float = 0.8 #percentage of rooms to delete
+var widen_by: int = 20
 
 var path: AStar2D
+var full_rect: Rect2
+var top_left: Vector2
+var bottom_right: Vector2
+
+var vendor_camp_position: Vector2
+var base_camp_position: Vector2
+var rooms_that_need_doors: Array = []
 @onready var count: int  = 0
 
 func _ready():
@@ -60,6 +71,7 @@ func make_rooms():
 	
 	var room_positions: Array = []
 	
+	# room culling
 	for r in rooms.get_children():
 		if randf() < culling_coefficient:
 			r.queue_free()
@@ -69,8 +81,37 @@ func make_rooms():
 	
 	await get_tree().create_timer(0.5).timeout
 	
-	# generate minimum spanning tree to connect all the roons
+	full_rect = Rect2()
 	
+	# find full_rect = smallest rectangle that encompases all non-prebuilt rooms
+	for room in rooms.get_children():
+		var room_size = room.collision_shape_2d.shape.size
+		var room_rect: Rect2 = Rect2(room.position - room_size / 2, room_size)
+		full_rect = full_rect.merge(room_rect)
+	
+	rooms_that_need_doors = []
+	
+	# choosing positions for prebuilt rooms
+	vendor_camp_position.x = full_rect.position.x - (widen_by / 2) * tile_size
+	vendor_camp_position.y = randi_range(full_rect.position.y, full_rect.end.y)
+	room_positions.append(vendor_camp_position)
+	rooms_that_need_doors.append(vendor_camp_position)
+	
+	base_camp_position.x = full_rect.end.x + (widen_by / 2) * tile_size
+	base_camp_position.y = randi_range(full_rect.position.y, full_rect.end.y)
+	room_positions.append(base_camp_position)
+	rooms_that_need_doors.append(base_camp_position)
+	
+	# expand full_rect to encompas pre-built rooms
+	full_rect.position.x = vendor_camp_position.x - 2 * tile_size
+	full_rect.end.x = base_camp_position.x + 2 * tile_size
+	
+	top_left = tile_map.local_to_map(full_rect.position)
+	bottom_right = tile_map.local_to_map(full_rect.end)
+	
+	print(tile_map.local_to_map(vendor_camp_position), tile_map.local_to_map(base_camp_position))
+	
+	# generate minimum spanning tree to connect all the roomns
 	find_mst(room_positions)
 	
 func find_mst(nodes) -> AStar2D:
@@ -104,25 +145,20 @@ func find_mst(nodes) -> AStar2D:
 			
 func make_tilemap():
 	tile_map.clear()
-	# find full_rect = smallest rectangle that encompases all rooms
-	var full_rect: Rect2
-	for room in rooms.get_children():
-		var room_size = room.collision_shape_2d.shape.size
-		var room_rect: Rect2 = Rect2(room.position - room_size / 2, room_size)
-		full_rect = full_rect.merge(room_rect)
 	
-	var top_left = tile_map.local_to_map(full_rect.position)
-	var bottom_right = tile_map.local_to_map(full_rect.end)
+	for d in blank_rooms.get_children():
+		d.queue_free()
 	
 	var cell_array: Array = []
 	
+	# Fill full_rect with wall tiles
 	for x in range(top_left.x - 2, bottom_right.x + 2):
 		for y in range(top_left.y - 2, bottom_right.y + 2):
 			cell_array.append(Vector2i(x, y))
 
 	tile_map.set_cells_terrain_connect(0,cell_array, 0, 1)
 	
-	var corriders: Array = [] # one corrider per connection.start and connectiont.end
+	var corriders: Array = [] # one corrider per connection.start and connection.end
 	
 	# Carve out rooms
 	for room in rooms.get_children():
@@ -151,14 +187,21 @@ func make_tilemap():
 				room_cell_array.append(Vector2i(x, y))
 				
 		tile_map.set_cells_terrain_connect(0, room_cell_array, 0, 0)
-	print(corriders.size())
+	
+	# instantiating prebuilt rooms
+	#var blank_room_instance_1 = blank_room.instantiate()
+	#var blank_room_instance_2 = blank_room.instantiate()
+	#blank_room_instance_1.position = vendor_camp_position
+	#blank_room_instance_2.position = base_camp_position
+	#blank_rooms.add_child(blank_room_instance_1)
+	#blank_rooms.add_child(blank_room_instance_2)
 	
 func carve_corrider(start, end):
 	
-	# this finds what direction along the x and y axis must be carved
+	# this finds what direction along the x and y axis is to be carved
 	var difference_x = sign(end.x - start.x)
 	var difference_y = sign(end.y - start.y)
-	# differece_y and differece_x bust be equal to either -1 or 1
+	# differece_y and differece_x must be equal to either -1 or 1
 	if difference_x == 0:
 		difference_x = pow(-1.0, randi() % 2)
 	if difference_y == 0:
@@ -166,10 +209,22 @@ func carve_corrider(start, end):
 		
 	var x_over_y = start
 	var y_over_x = end
-	
-	if randi() % 2 > 0:
-		x_over_y = end
-		y_over_x = start
+		
+	for room in rooms_that_need_doors:
+		if tile_map.local_to_map(room) == end:
+			var rot: float = 0
+			room = tile_map.local_to_map(room)
+			room.x *= tile_size
+			room.y *= tile_size
+			print(start, end)
+			if difference_x and difference_y == -1:
+				rot = PI/2
+			print(difference_x, difference_y)
+			place_door_collisions(room, rot)
+		
+		elif randi() % 2 > 0:
+			x_over_y = end
+			y_over_x = start
 	
 	for x in range(start.x, end.x, difference_x):
 		tile_map.set_cells_terrain_connect(0, [Vector2i(x, y_over_x.y)], 0, 0)
@@ -178,3 +233,11 @@ func carve_corrider(start, end):
 		tile_map.set_cells_terrain_connect(0, [Vector2i(x_over_y.x, y)], 0, 0)
 		tile_map.set_cells_terrain_connect(0, [Vector2i(x_over_y.x + difference_x, y)], 0, 0)
 
+	
+	#place_door_collisions(rooms_that_need_doors)
+	
+func place_door_collisions(positions, rot):
+	var door = door_collision.instantiate()
+	door.position = positions
+	door.rotation += rot
+	blank_rooms.add_child(door)
