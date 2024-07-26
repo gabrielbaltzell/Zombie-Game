@@ -43,7 +43,7 @@ func identify_door_collision_pos(new_scene, _old_scene):
 		print(door.target_scene_path)
 		if door.target_scene_path == old_scene:
 			var _player = new_scene.find_child('player')
-			_player.position = door.global_position
+			_player.position = door.position
 	
 func initialize_scene(scene):
 	player = scene.find_child('player')
